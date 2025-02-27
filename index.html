@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emergency Information QR Code</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+    
+            align-items: center;
+            width: 50%;
+            margin: 0 auto;
+            text-align: center;
+            
+            
+        }
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-top: 20px;
+        }
+        .king{
+          display: flex;
+          gap: 20%;
+        }
+        .queen{
+          
+          max-width: 50%;
+          margin: 0 auto;
+          
+          display: flex;
+          flex-direction: row;
+          flex-wrap: wrap;
+          align-content: flex-start;
+          gap:20px
+        }
+        label {
+            margin-top: 10px;
+        }
+        input[type="text"],select,textarea {
+            width: 200px;
+            padding: 10px;
+            margin-top: 5px;
+        }
+        .qr-container {
+            display: flex;
+            align-items: center;
+            margin-top: 20px;
+        }
+        #qrcode {
+          background-color: whitesmoke;
+            border: solid 2px whitesmoke;
+            padding: 20px;
+            margin-left: 20px;
+        }
+        #qrcodeText {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Emergency Information QR Code</h1>
+        <div class="king">
+        <div class="input-group">
+            <label for="fullName">Full Name:</label>
+            <input type="text" id="fullName" placeholder="Enter full name">
+            <label for="bloodType">Blood Type:</label>
+            <input type="text" id="bloodType" placeholder="Enter blood type">
+            <label for="dropdown">Blood type:</label>
+            <select id="dropdown">
+                <option value="option1">A+</option>
+                <option value="option2">A-</option>
+                <option value="option3">B+</option>
+                <option value="option3">B-</option>
+                <option value="option3">O+</option>
+                <option value="option3">O-</option>
+            </select>
+            <label for="emergencyContactName">Emergency Contact Name:</label>
+            <input type="text" id="emergencyContactName" placeholder="Enter emergency contact name">
+            <label for="relationship">Relationship:</label>
+            <input type="text" id="relationship" placeholder="Enter relationship">
+            <label for="emergencyContactPhone">Emergency Contact Phone:</label>
+            <input type="text" id="emergencyContactPhone" placeholder="Enter emergency contact phone">
+            <label for="allergies">Allergies:</label>
+            <textarea id="allergies" placeholder="Type something"></textarea>
+            <label for="Currrent-Medication">Currrent Medication:</label>
+            <textarea id="Currrent-Medication" placeholder="Type something"></textarea>
+            <label for="Medical-Condition">Medical Condition:</label>
+            <textarea id="Medical-Condition" placeholder="Type something"></textarea>
+            
+      
+            
+              
+            
+        </div>
+        <div class="queen">
+        <div class="qr-container">
+            <div id="qrcode"></div>
+        </div>
+        <p id="qrcodeText">Scan the QR code to view emergency medical information directly.This information will be displayed in a clear readable format</p>
+      </div>
+      </div>
+    </div>
+
+    <script src="davidshimjs-qrcodejs-04f46c6/qrcode.min.js"></script>
+    <script>
+        function generateQRCode() {
+            const fullName = document.getElementById("fullName").value;
+            const bloodType = document.getElementById("bloodType").value;
+            const emergencyContactName = document.getElementById("emergencyContactName").value;
+            const relationship = document.getElementById("relationship").value;
+            const emergencyContactPhone = document.getElementById("emergencyContactPhone").value;
+            const allergies = document.getElementById("allergies").value;
+            const Currrent = document.getElementById("Currrent-Medication").value;
+            const Medical= document.getElementById("Medical-Condition").value;
+            console.log(Medical);
+            // Combine values of all input fields
+            const mobileNumberPattern = /^[6-9]\d{9}$/; 
+            if (mobileNumberPattern.test(emergencyContactPhone)==false) {
+              alert("Invalid mobile number. Please enter a valid 10-digit mobile number.");
+            } 
+            const combinedData = `Full Name: ${fullName}\nBlood Type: ${bloodType}\nEmergency Contact Name: ${emergencyContactName}\nRelationship: ${relationship}\n
+            Emergency Contact Phone: ${emergencyContactPhone}\nAllergies: ${allergies}\nCurrrent-Medication: ${Currrent}\nMedical-Condition: ${Medical}`;
+            // Generate QR code
+            const qrcodeContainer = document.getElementById("qrcode");
+            qrcodeContainer.innerHTML = ""; // Clear previous QR code
+            if (combinedData.trim() !== "") {
+                new QRCode(qrcodeContainer, {
+                    text: combinedData,
+                    width: 256, // Adjust width
+                    height: 256 // Adjust height
+                });
+            }
+            // Update text under QR code
+            document.getElementById("qrcodeText").textContent = combinedData.replace(/\n/g, ", ");
+        }
+
+        // Attach event listeners to input fields
+        document.querySelectorAll("input[type='text']").forEach(input => {
+            input.addEventListener("input", generateQRCode);
+        });
+    </script>
+</body>
+</html>
